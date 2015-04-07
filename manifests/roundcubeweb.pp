@@ -85,7 +85,7 @@ class roundcube::roundcubeweb (
 
   exec { 'reconfigure_roundcube':
     refreshonly => true,
-    command     => 'dpkg-reconfigure roundcube-core',
+    command     => '/usr/sbin/dpkg-reconfigure roundcube-core',
   }
 
   file { "$confdir/main.inc.php":
