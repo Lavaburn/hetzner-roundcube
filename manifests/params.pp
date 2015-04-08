@@ -1,63 +1,57 @@
 class roundcube::params {
-  #database params
+  # Installation
+  $apt_mirror                 = 'http://ftp.debian.org/debian'
+  $roundcube_backend          = 'pgsql'
+  $install_extra_plugins      = true
+
+  # Configuration
+  $dbconfig_file              = '/etc/dbconfig-common/roundcube.conf'
   $confdir                    = '/etc/roundcube'
-  $database_host              = $::fqdn
-  $database_port              = '5432'
+  $main_inc_php_erb           = 'roundcube/main.inc.php.erb'
+
+  # Database
+  $database_host              = 'localhost'
+  $database_port              = undef
   $database_name              = 'roundcubedb'
   $database_username          = 'roundcubedb'
   $database_password          = 'roundcubedb'
   $database_ssl               = false
-  $postgres_listen_addresses  = $::fqdn
-  $roundcube_backend          = 'pgsql'
-  $roundcube_webserver        = 'apache'
-  $ip_mask_allow_all_users    = '0.0.0.0/0'
 
-  #webserver params
-  $apt_mirror                 = 'http://ftp.debian.org/debian'
-  $main_inc_php_erb           = 'roundcube/main.inc.php.erb'
+  # WebServer - Apache
+  $install_apache             = false
   $default_vhost_on           = true
   $default_mods               = false
   $default_confd_files        = false
+  $purge_configs              = true
   $mpm_module                 = 'prefork'
-  $force_https                = false
+  $install_apache_mods        = false
+
+  $ssl                        = false
+  $redirect_to_ssl            = false
+
+  $port                       = undef
+  $non_ssl_port               = undef
+
   $servername                 = $::fqdn
   $serveraliases              = []
+
   $documentroot               = '/var/lib/roundcube'
-  $purge_configs              = true
-  $scriptaliases              = [ { alias          => '/program/js/tiny_mce/',
-                                    path           => '/usr/share/tinymce/www/' } ]
-  $apache_port                = '80'
-  $addhandlers                = []
-  $ssl                        = false
+
   $ssl_ca                     = undef
   $ssl_cert                   = undef
   $ssl_key                    = undef
-  $redirect_to_ssl            = false
-  $suphp_user                 = 'roundcube'
-  $suphp_group                = 'roundcube'
-  $rewrites                   = undef
-  $directories                = [ { path           => $documentroot,
-                                    options        => '+FollowSymLinks',
-                                    allow_override => 'All',
-                                    order          => 'allow,deny',
-                                    allow          => 'from all' },
-                                  { path           => "${documentroot}/config",
-                                    options        => '-FollowSymLinks',
-                                    allow_override => 'None' },
-                                  { path           => "${documentroot}/temp",
-                                    options        => '-FollowSymLinks',
-                                    allow_override => 'None',
-                                    order          => 'allow,deny',
-                                    deny           => 'from all' },
-                                  { path           => "${documentroot}/logs",
-                                    options        => '-FollowSymLinks',
-                                    allow_override => 'None',
-                                    order          => 'allow,deny',
-                                    deny           => 'from all' },
-                                  { path           => '/usr/share/tinymce/www/',
-                                    options        => 'Indexes MultiViews FollowSymLinks',
-                                    allow_override => 'None',
-                                    order          => 'allow,deny',
-                                    allow          => 'from all' } ]
 
+  # Database - PostgreSQL
+  $install_postgresql         = false
+  $ip_mask_allow_all_users    = '0.0.0.0/0'
+  $listen_addresses           = $::fqdn
+
+  # Legacy
+  # TODO - Remove after testing
+  #  $roundcube_webserver        = 'apache'
+  #  $force_https                = false
+  #  $addhandlers                = []
+  #  $rewrites                   = undef
+  #  $suphp_user                 = 'roundcube'
+  #  $suphp_group                = 'roundcube'
 }
