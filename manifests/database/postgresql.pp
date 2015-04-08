@@ -49,8 +49,8 @@ class roundcube::database::postgresql (
   exec { 'roundcube_load_postgres_schema':
     user        => 'postgres',
     environment => [ 'PGPASSFILE=/root/.roundcube.pgpass' ],
-    command     => "psql -U ${database_username} -h localhost ${database_name} < /root/roundcube.postgres.sql",
-    onlyif      => "psql ${database_name} -c \"\\dt\" | grep -c \"No relations found.\"",
+    command     => "/usr/bin/psql -U ${database_username} -h localhost ${database_name} < /root/roundcube.postgres.sql",
+    onlyif      => "/usr/bin/psql ${database_name} -c \"\\dt\" | grep -c \"No relations found.\"",
     require     => [
       Postgresql::Server::Db[$database_name],
       File['/root/roundcube.postgres.sql'],
