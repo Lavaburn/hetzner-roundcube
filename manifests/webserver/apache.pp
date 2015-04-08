@@ -87,26 +87,35 @@ class roundcube::webserver::apache (
     { path           => $documentroot,
       options        => '+FollowSymLinks',
       allow_override => 'All',
-      order          => 'allow,deny',
-      allow          => 'from all' },
+      require        => 'all granted',  # DEPRECATED SINCE Apache 2.4:
+                                        #order          => 'allow,deny',
+                                        #allow          => 'from all'
+    },
     { path           => "${documentroot}/config",
       options        => '-FollowSymLinks',
-      allow_override => 'None' },
+      allow_override => 'None'
+    },
     { path           => "${documentroot}/temp",
       options        => '-FollowSymLinks',
       allow_override => 'None',
-      order          => 'allow,deny',
-      deny           => 'from all' },
+      require        => 'all denied',   # DEPRECATED SINCE Apache 2.4:
+                                        #order          => 'allow,deny',
+                                        #deny           => 'from all'
+    },
     { path           => "${documentroot}/logs",
       options        => '-FollowSymLinks',
       allow_override => 'None',
-      order          => 'allow,deny',
-      deny           => 'from all' },
+      require        => 'all denied',   # DEPRECATED SINCE Apache 2.4:
+                                        #order          => 'allow,deny',
+                                        #deny           => 'from all'
+    },
     { path           => '/usr/share/tinymce/www/',
       options        => 'Indexes MultiViews FollowSymLinks',
       allow_override => 'None',
-      order          => 'allow,deny',
-      allow          => 'from all' }
+      require        => 'all granted',  # DEPRECATED SINCE Apache 2.4:
+                                        #order          => 'allow,deny',
+                                        #allow          => 'from all'
+    }
   ]
 
   apache::vhost { 'roundcube':
