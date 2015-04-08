@@ -27,11 +27,11 @@ class roundcube (
   # Sensible Defaults
   if ($database_port == undef) {
 	  if ($roundcube_backend == 'pqsql') {
-	    $database_port = '5432'
+	    $real_database_port = '5432'
 	  } elsif ($roundcube_backend == 'mysql') {
-	    $database_port = '3306'
+	    $real_database_port = '3306'
 	  } else {
-	    $database_port = ''
+	    $real_database_port = ''
 	  }
   } else {
     $real_database_port = $database_port
@@ -106,7 +106,7 @@ class roundcube (
 
   ini_setting {'dbport':
     setting => 'dbc_dbport',
-    value   => "'${database_port}';",
+    value   => "'${real_database_port}';",
   }
 
   ini_setting {'dbssl':
