@@ -32,6 +32,9 @@ class roundcube::database::postgresql (
   # Step 1 - Load in schema
   file { '/root/roundcube.postgres.sql':
     ensure => present,
+    mode   => '0600',
+    owner  => 'postgres',
+    group  => 'postgres',
     source => 'puppet:///modules/roundcube/postgres.initial.sql',
   }
 
