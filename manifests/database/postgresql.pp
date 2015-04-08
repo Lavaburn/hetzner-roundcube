@@ -30,7 +30,9 @@ class roundcube::database::postgresql (
 
   # Schema Import
   # Step 1 - Load in schema
-  file { '/root/roundcube.postgres.sql':
+  $postgres_home = '/var/lib/postgresql'
+
+  file { "${postgres_home}/roundcube.postgres.sql":
     ensure => present,
     mode   => '0600',
     owner  => 'postgres',
@@ -39,7 +41,7 @@ class roundcube::database::postgresql (
   }
 
   # Step 2 - Password file
-  file { '/root/.roundcube.pgpass':
+  file { "${postgres_home}/.roundcube.pgpass":
     ensure  => present,
     mode    => '0600',
     owner   => 'postgres',
@@ -51,13 +53,13 @@ class roundcube::database::postgresql (
   # Step 3 - Load in schema
   exec { 'roundcube_load_postgres_schema':
     user        => 'postgres',
-    environment => [ 'PGPASSFILE=/root/.roundcube.pgpass' ],
-    command     => "/usr/bin/psql -U ${database_username} -h localhost ${database_name} < /root/roundcube.postgres.sql",
+    environment => [ "PGPASSFILE=${postgres_home}/.roundcube.pgpass" ],
+    command     => "/usr/bin/psql -U ${database_username} -h localhost ${database_name} < ${postgres_home}/roundcube.postgres.sql",
     onlyif      => "/usr/bin/psql ${database_name} -c \"\\dt\" | grep -c \"No relations found.\"",
     require     => [
       Postgresql::Server::Db[$database_name],
-      File['/root/roundcube.postgres.sql'],
-      File['/root/.roundcube.pgpass']
+      File["${postgres_home}/roundcube.postgres.sql"],
+      File["${postgres_home}/.roundcube.pgpass"]
     ],
   }
 
