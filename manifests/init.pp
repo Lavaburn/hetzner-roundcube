@@ -26,7 +26,7 @@ class roundcube (
 
   # Sensible Defaults
   if ($database_port == undef) {
-	  if ($roundcube_backend == 'pqsql') {
+	  if ($roundcube_backend == 'pgsql') {
 	    $real_database_port = '5432'
 	  } elsif ($roundcube_backend == 'mysql') {
 	    $real_database_port = '3306'
